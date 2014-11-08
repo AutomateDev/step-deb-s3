@@ -32,7 +32,7 @@ install_build_tools() {
 
 install_ruby() {
   info 'Installing ruby';
-  sudo apt-get install -y ruby1.9.1;
+  sudo apt-get install -y ruby1.9.1 ruby1.9.1-dev;
 }
 
 install_deb_s3() {

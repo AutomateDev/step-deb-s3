@@ -1,0 +1,30 @@
+---
+driver:
+  name: ec2
+  aws_access_key_id: <%= ENV['AWS_ACCESS_KEY'] %>
+  aws_secret_access_key: <%= ENV['AWS_SECRET_KEY'] %>
+  aws_ssh_key_id: <%= ENV['AWS_SSH_KEY_ID'] %>
+  ssh_key: <%= ENV['AWS_SSH_KEY_FILE'] %>
+  # Security groups: "default" and "AWS-OpsWorks-Blank-Server" (SSH enabled)
+  security_group_ids: ["sg-159c1e62", "sg-d5532aa2"]
+  region: eu-west-1
+  availability_zone: eu-west-1a
+  require_chef_omnibus: true
+  flavor_id: t1.micro
+
+busser:
+  ruby_bindir: /usr/bin
+
+provisioner:
+  name: shell
+  sudo: false
+  script: run.sh
+
+platforms:
+  - name: ubuntu-12.04
+    driver:
+      image_id: ami-d1f308a6
+      username: ubuntu
+
+suites:
+  - name: default
