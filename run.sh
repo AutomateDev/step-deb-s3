@@ -3,22 +3,22 @@ set -e;
 
 init_wercker_environment_variables() {
   info "Checking variables"
-  if [ ! -n "$DEB_S3_KEY" ]
+  if [ ! -n "$WERCKER_DEB_S3_KEY" ]
   then
     fail 'missing or empty option key, please check wercker.yml';
   fi
 
-  if [ ! -n "$DEB_S3_SECRET" ]
+  if [ ! -n "$WERCKER_DEB_S3_SECRET" ]
   then
     fail 'missing or empty option secret, please check wercker.yml';
   fi
 
-  if [ ! -n "$DEB_S3_BUCKET" ]
+  if [ ! -n "$WERCKER_DEB_S3_BUCKET" ]
   then
     fail 'missing or empty option bucket, please check wercker.yml';
   fi
 
-  if [ ! -n "$DEB_S3_PACKAGE" ]
+  if [ ! -n "$WERCKER_DEB_S3_PACKAGE" ]
   then
     fail 'missing or empty option package, please check wercker.yml';
   fi
@@ -49,4 +49,4 @@ install_deb_s3;
 
 info 'starting synchronisation';
 
-deb-s3 upload --bucket ${DEB_S3_BUCKET} --use-ssl --access-key-id=${DEB_S3_KEY} --secret-access-key=${DEB_S3_SECRET} ${DEB_S3_PACKAGE}
+deb-s3 upload --bucket ${WERCKER_DEB_S3_BUCKET} --use-ssl --access-key-id=${WERCKER_DEB_S3_KEY} --secret-access-key=${WERCKER_DEB_S3_SECRET} ${WERCKER_DEB_S3_PACKAGE}
