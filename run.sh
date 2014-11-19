@@ -24,20 +24,35 @@ init_wercker_environment_variables() {
   fi
 }
 
+# Testing correctly whether executables are available:
+# http://stackoverflow.com/a/677212
+
 install_build_tools() {
-  info 'Installing build tools';
-  sudo apt-get update;
-  sudo apt-get install -y build-essential;
+  if dpkg -s build-essential >/dev/null 2>&1; then
+    info 'Build tools already installed';
+  else
+    info 'Installing build tools';
+    sudo apt-get update;
+    sudo apt-get install -y build-essential;
+  fi
 }
 
 install_ruby() {
-  info 'Installing ruby';
-  sudo apt-get install -y ruby1.9.1 ruby1.9.1-dev;
+  if hash ruby 2>/dev/null; then
+    info 'Ruby already installed'
+  else
+    info 'Installing ruby';
+    sudo apt-get install -y ruby1.9.1 ruby1.9.1-dev;
+  fi
 }
 
 install_deb_s3() {
-  info 'Installing deb-s3'
-  sudo gem install deb-s3  --no-rdoc --no-ri --version 0.6.2;
+  if hash deb-s3 2>/dev/null; then
+    info 'deb-s3 already installed'
+  else
+    info 'Installing deb-s3'
+    sudo gem install deb-s3  --no-rdoc --no-ri --version 0.6.2;
+  fi
 }
 
 info 'setup step';
