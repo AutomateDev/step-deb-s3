@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e;
 
+ADDITIONAL_ARGUMENTS=" "
+
 init_wercker_environment_variables() {
   info "Checking variables"
   if [ ! -n "$WERCKER_DEB_S3_KEY" ]
@@ -22,6 +24,17 @@ init_wercker_environment_variables() {
   then
     fail 'missing or empty option package, please check wercker.yml';
   fi
+
+  if [ -n "$WERCKER_DEB_S3_CODENAME" ]
+  then
+    ADDITIONAL_ARGUMENTS="$ADDITIONAL_ARGUMENTS--codename=$WERCKER_DEB_S3_CODENAME "
+  fi
+
+  if [ -n "$WERCKER_DEB_S3_COMPONENT" ]
+  then
+    ADDITIONAL_ARGUMENTS="$ADDITIONAL_ARGUMENTS--component=$WERCKER_DEB_S3_COMPONENT "
+  fi
+
 }
 
 # Testing correctly whether executables are available:
@@ -64,4 +77,4 @@ install_deb_s3;
 
 info 'starting synchronisation';
 
-deb-s3 upload --bucket ${WERCKER_DEB_S3_BUCKET} --use-ssl --access-key-id=${WERCKER_DEB_S3_KEY} --secret-access-key=${WERCKER_DEB_S3_SECRET} ${WERCKER_DEB_S3_PACKAGE}
+deb-s3 upload --bucket ${WERCKER_DEB_S3_BUCKET} --use-ssl --access-key-id=${WERCKER_DEB_S3_KEY} --secret-access-key=${WERCKER_DEB_S3_SECRET}${ADDITIONAL_ARGUMENTS} ${WERCKER_DEB_S3_PACKAGE}
